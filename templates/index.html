@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Taylor Swift Song Lyrics</title>
+  </head>
+  <body>
+    <h1>Taylor Swift Song Lyrics</h1>
+    {% if lyrics %}
+      {% for lyric in lyrics %}
+        <p>{{ lyric }}</p>
+      {% endfor %}
+    {% else %}
+      <p>No lyrics found</p>
+    {% endif %}
+  </body>
+</html>
