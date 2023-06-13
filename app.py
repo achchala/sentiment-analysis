@@ -1,6 +1,7 @@
 from flask import Flask, render_template
 import requests
 from bs4 import BeautifulSoup
+from nltk.sentiment import SentimentIntensityAnalyzer
 
 app = Flask(__name__)
 
@@ -17,6 +18,8 @@ def index():
         "https://api.genius.com/artists/1177/songs", headers=headers, params=params
     )
 
+    sid = SentimentIntensityAnalyzer()
+
     if response.status_code == 200:
         songs = response.json()["response"]["songs"]
         lyrics = []
@@ -28,7 +31,15 @@ def index():
             lyrics_tag = soup.find("div", class_="lyrics")
             if lyrics_tag:
                 lyrics_text = lyrics_tag.get_text().strip()
-                lyrics.append(lyrics_text)
+
+                # Sentiment analysis
+                sentiment_scores = sid.polarity_scores(lyrics_text)
+                sentiment = sentiment_scores[
+                    "compound"
+                ]  # Assuming you want the compound sentiment score
+                lyrics.append({"text": lyrics_text, "sentiment": sentiment})
+            else:
+                return "Error retrieving lyrics from Genius API"
 
         return render_template("index.html", lyrics=lyrics)
     else:
