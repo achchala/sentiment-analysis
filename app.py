@@ -1,7 +1,12 @@
 from flask import Flask, render_template
+import numpy as np  # linear algebra
+import pandas as pd  # data processing, CSV file I/O (e.g. pd.read_csv)
+import re
+import os
 import requests
 from bs4 import BeautifulSoup
 from nltk.sentiment import SentimentIntensityAnalyzer
+
 
 app = Flask(__name__)
 
