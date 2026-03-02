@@ -131,7 +131,12 @@ st.markdown(
 # album info with enhanced styling
 col1, col2, col3 = st.columns([1, 2, 1])
 with col2:
-    st.image(album_data["cover_art_url"], width=300)
+    st.markdown(
+        f'<div style="display: flex; justify-content: center;">'
+        f'<img src="{album_data["cover_art_url"]}" width="300" style="display: block;">'
+        f"</div>",
+        unsafe_allow_html=True,
+    )
     st.markdown(
         f"<h3 class='album-title' style='text-align: center;'>{album_data['full_title'].lower()}</h3>",
         unsafe_allow_html=True,
@@ -148,13 +153,13 @@ with col2:
 # creative insights section
 st.markdown("---")
 st.markdown(
-    '<h2 class="section-header">🔍 **creative insights & patterns**</h2>',
+    '<h2 class="section-header">🔍 creative insights & patterns</h2>',
     unsafe_allow_html=True,
 )
 
 # emotional journey visualization
 st.markdown(
-    '<h3 class="sub-header">**emotional journey through the album**</h3>',
+    '<h3 class="sub-header">emotional journey through the album</h3>',
     unsafe_allow_html=True,
 )
 fig_journey = go.Figure()
@@ -196,9 +201,7 @@ for i, (title, sentiment) in enumerate(zip(df["title"], df["sentiment"])):
 st.plotly_chart(fig_journey, use_container_width=True)
 
 # Word cloud for the entire album
-st.markdown(
-    '<h3 class="sub-header">☁️ **album word cloud**</h3>', unsafe_allow_html=True
-)
+st.markdown('<h3 class="sub-header">☁️ album word cloud</h3>', unsafe_allow_html=True)
 all_lyrics = " ".join(df["lyrics"].tolist())
 words = re.findall(r"\b\w+\b", all_lyrics.lower())
 word_freq = Counter(words)
@@ -328,7 +331,7 @@ if filtered_words:
 
 # Lyrical complexity analysis
 st.markdown(
-    '<h3 class="sub-header">🧠 **lyrical complexity analysis**</h3>',
+    '<h3 class="sub-header">🧠 lyrical complexity analysis</h3>',
     unsafe_allow_html=True,
 )
 col1, col2, col3, col4 = st.columns(4)
@@ -343,9 +346,7 @@ with col4:
     st.metric("avg words per song", f"{df['word_count'].mean():.0f}")
 
 # Song comparison radar chart
-st.markdown(
-    '<h3 class="sub-header">**song comparison radar**</h3>', unsafe_allow_html=True
-)
+st.markdown('<h3 class="sub-header">song comparison radar</h3>', unsafe_allow_html=True)
 selected_songs = st.multiselect(
     "select songs to compare", df["title"].tolist(), default=df["title"].tolist()[:3]
 )
@@ -386,7 +387,7 @@ if selected_songs:
 # Selected song deep dive
 st.markdown("---")
 st.markdown(
-    f'<h2 class="section-header">🎵 **deep dive: {selected_song.lower()}**</h2>',
+    f'<h2 class="section-header">🎵 deep dive: {selected_song.lower()}</h2>',
     unsafe_allow_html=True,
 )
 
@@ -437,7 +438,7 @@ with col4:
     )
 
 # Creative insights for selected song
-st.markdown('<h3 class="sub-header">**song insights**</h3>', unsafe_allow_html=True)
+st.markdown('<h3 class="sub-header">song insights</h3>', unsafe_allow_html=True)
 insights = []
 if song_row["sentiment"] > 0.3:
     insights.append("this song has a notably positive emotional tone")
@@ -462,13 +463,13 @@ for insight in insights:
     st.markdown(f'<div class="insight-box">{insight}</div>', unsafe_allow_html=True)
 
 # Lyrics display
-st.markdown('<h3 class="sub-header">**full lyrics**</h3>', unsafe_allow_html=True)
+st.markdown('<h3 class="sub-header">full lyrics</h3>', unsafe_allow_html=True)
 st.text_area("Lyrics", song_row["lyrics"], height=300, key="lyrics_display")
 
 # Album-wide patterns
 st.markdown("---")
 st.markdown(
-    '<h2 class="section-header">**album-wide patterns**</h2>', unsafe_allow_html=True
+    '<h2 class="section-header">album-wide patterns</h2>', unsafe_allow_html=True
 )
 
 col1, col2 = st.columns(2)
